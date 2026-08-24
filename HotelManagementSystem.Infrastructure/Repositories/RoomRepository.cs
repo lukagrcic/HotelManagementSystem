@@ -14,6 +14,17 @@ namespace HotelManagementSystem.Infrastructure.Repositories
         {
         }
 
+        public override Room? GetById(int id)
+        {
+            return _dbSet.Include(r => r.RoomType).FirstOrDefault(r => r.RoomId == id);
+        }
+
+        public override IEnumerable<Room> GetAll()
+        {
+            return _dbSet.Include(r => r.RoomType).ToList();
+        }
+
+
         public IEnumerable<Room> GetAvailableRooms(DateTime dateFrom, DateTime dateTo)
         {
             return _dbSet

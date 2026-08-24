@@ -1,0 +1,59 @@
+﻿using HotelManagementSystem.Application.Features.Employees.Commands;
+using HotelManagementSystem.Application.Features.Employees.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace HotelManagementSystem.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class EmployeesController : ControllerBase
+    {
+        private readonly IMediator _mediator;
+
+        public EmployeesController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateEmployeeCommand command)
+        {
+            var id = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetById), new { id }, null);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var result = await _mediator.Send(new GetEmployeeByIdQuery(id));
+            if (result is null) return NotFound();
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _mediator.Send(new GetAllEmployeesQuery());
+
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, UpdateEmployeeCommand command)
+        {
+            command.EmployeeId = id;
+            var success = await _mediator.Send(command);
+            return success ? NoContent() : NotFound();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var success = await _mediator.Send(new DeleteEmployeeCommand(id));
+            return success ? NoContent() : NotFound();
+        }
+    }
+}
