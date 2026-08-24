@@ -4,6 +4,6 @@ namespace HotelManagementSystem.Domain.Repositories
 {
     public interface IGuestRepository : IRepository<Guest>
     {
-        Guest? GetById(string jmbg);
+        Guest? GetByJmbg(string jmbg);
     }
 }

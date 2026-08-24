@@ -28,12 +28,12 @@ namespace HotelManagementSystem.Infrastructure.Repositories
             _dbSet.Remove(entity);
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return _dbSet.ToList();
         }
 
-        public T? GetById(int id)
+        public virtual T? GetById(int id)
         {
             return _dbSet.Find(id);
         }
