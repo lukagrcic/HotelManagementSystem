@@ -24,5 +24,29 @@ namespace HotelManagementSystem.Infrastructure.Repositories
             return _dbSet.Include(r => r.ReservationRooms).ThenInclude(rr => rr.Room)
                 .Where(r => r.GuestId == guestId).ToList();
         }
+
+
+        public override Reservation? GetById(int id)
+        {
+            return _dbSet
+                .Include(r => r.Guest)
+                .Include(r => r.Employee)
+                .Include(r => r.ReservationRooms)
+                    .ThenInclude(rr => rr.Room)
+                        .ThenInclude(room => room.RoomType)
+                .FirstOrDefault(r => r.ReservationId == id);
+        }
+
+
+        public override IEnumerable<Reservation> GetAll()
+        {
+            return _dbSet
+                .Include(r => r.Guest)
+                .Include(r => r.Employee)
+                .Include(r => r.ReservationRooms)
+                    .ThenInclude(rr => rr.Room)
+                        .ThenInclude(room => room.RoomType)
+                .ToList();
+        }
     }
 }

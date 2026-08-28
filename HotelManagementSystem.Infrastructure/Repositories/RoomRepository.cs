@@ -35,12 +35,11 @@ namespace HotelManagementSystem.Infrastructure.Repositories
                 .ToList();
         }
 
-        public bool IsAvailable(int roomId, DateTime dateFrom, DateTime dateTo)
+        public bool IsAvailable(int roomId, DateTime dateFrom, DateTime dateTo, int? excludeReservationId = null)
         {
             return !_context.ReservationRooms
-                .Where(rr => rr.RoomId == roomId)
-                .Any(rr => dateFrom < rr.Reservation.DateTo
-                    && dateTo > rr.Reservation.DateFrom);
+                .Where(rr => rr.RoomId == roomId && (excludeReservationId == null || rr.ReservationId != excludeReservationId))
+                .Any(rr => dateFrom < rr.Reservation.DateTo && dateTo > rr.Reservation.DateFrom);
         }
     }
 }
