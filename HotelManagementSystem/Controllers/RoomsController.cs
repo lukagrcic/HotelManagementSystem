@@ -25,6 +25,14 @@ namespace HotelManagementSystem.Controllers
             return CreatedAtAction(nameof(GetById), new { id }, null);
         }
 
+        [HttpGet("available")]
+        public async Task<IActionResult> GetAvailableRooms([FromQuery] DateTime dateFrom,
+                                                            [FromQuery] DateTime dateTo)
+        {
+            var result = await _mediator.Send(new GetAvailableRoomsQuery(dateFrom, dateTo));
+            return Ok(result);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

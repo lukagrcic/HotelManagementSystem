@@ -33,6 +33,22 @@ namespace HotelManagementSystem.Controllers
             return Ok(result);
         }
 
+        [HttpGet("by-guest/{guestId}")]
+        public async Task<IActionResult> GetByGuest(int guestId)
+        {
+            var result = await _mediator.Send(new GetReservationsByGuestQuery(guestId));
+
+            return Ok(result);
+        }
+
+        [HttpGet("by-employee/{employeeId}")]
+        public async Task<IActionResult> GetByEmployee(int employeeId)
+        {
+            var result = await _mediator.Send(new GetReservationsByEmployeeQuery(employeeId));
+
+            return Ok(result);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

@@ -24,6 +24,15 @@ namespace HotelManagementSystem.Controllers
             return CreatedAtAction(nameof(GetById), new { id }, null);
         }
 
+        [HttpGet("by-jmbg/{jmbg}")]
+        public async Task<IActionResult> GetByJmbg(string jmbg)
+        {
+            var result = await _mediator.Send(new GetGuestByJmbgQuery(jmbg));
+            if (result is null) return NotFound();
+
+            return Ok(result);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

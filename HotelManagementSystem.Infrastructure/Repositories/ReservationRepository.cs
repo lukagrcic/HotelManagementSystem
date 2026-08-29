@@ -15,14 +15,26 @@ namespace HotelManagementSystem.Infrastructure.Repositories
 
         public IEnumerable<Reservation> GetByEmployeeId(int employeeId)
         {
-            return _dbSet.Include(r => r.ReservationRooms).ThenInclude(rr => rr.Room)
-                .Where(r => r.EmployeeId == employeeId).ToList();
+            return _dbSet
+                .Include(r => r.Guest)
+                .Include(r => r.Employee)
+                .Include(r => r.ReservationRooms)
+                    .ThenInclude(rr => rr.Room)
+                        .ThenInclude(room => room.RoomType)
+                .Where(r => r.EmployeeId == employeeId)
+                .ToList();
         }
 
         public IEnumerable<Reservation> GetByGuestId(int guestId)
         {
-            return _dbSet.Include(r => r.ReservationRooms).ThenInclude(rr => rr.Room)
-                .Where(r => r.GuestId == guestId).ToList();
+            return _dbSet
+                .Include(r => r.Guest)
+                .Include(r => r.Employee)
+                .Include(r => r.ReservationRooms)
+                    .ThenInclude(rr => rr.Room)
+                        .ThenInclude(room => room.RoomType)
+                .Where(r => r.GuestId == guestId)
+                .ToList();
         }
 
 

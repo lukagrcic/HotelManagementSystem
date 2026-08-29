@@ -20,6 +20,8 @@ namespace HotelManagementSystem.Infrastructure.Repositories
             _dbSet.Include(g => g.City).ToList();
 
         public Guest? GetByJmbg(string jmbg) =>
-            _dbSet.Include(g => g.City).FirstOrDefault(g => g.Jmbg == jmbg);
+            _dbSet
+                .Include(g => g.City)
+                .FirstOrDefault(g => g.Jmbg == jmbg);
     }
 }
