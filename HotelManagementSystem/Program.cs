@@ -1,3 +1,4 @@
+using FluentValidation;
 using HotelManagementSystem.Domain.Repositories;
 using HotelManagementSystem.Infrastructure;
 using HotelManagementSystem.Infrastructure.Repositories;
@@ -19,6 +20,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(HotelManagementSystem.Application.AssemblyReference).Assembly));
 
+builder.Services.AddValidatorsFromAssemblyContaining<HotelManagementSystem.Application.AssemblyReference>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
