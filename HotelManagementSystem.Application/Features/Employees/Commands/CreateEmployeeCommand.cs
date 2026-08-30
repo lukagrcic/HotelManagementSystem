@@ -2,6 +2,7 @@
 using HotelManagementSystem.Domain.Entities;
 using HotelManagementSystem.Domain.Repositories;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +15,7 @@ namespace HotelManagementSystem.Application.Features.Employees.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<CreateEmployeeCommand> _validator;
+        private readonly PasswordHasher<Employee> _passwordHasher = new();
 
         public CreateEmployeeCommandHandler(IUnitOfWork unitOfWork, IValidator<CreateEmployeeCommand> validator)
         {
@@ -33,9 +35,9 @@ namespace HotelManagementSystem.Application.Features.Employees.Commands
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Username = request.Username,
-                PasswordHash = request.Password
+                Username = request.Username
             };
+            employee.PasswordHash = _passwordHasher.HashPassword(employee, request.Password);
 
             _unitOfWork.Employees.Add(employee);
             _unitOfWork.SaveChanges();

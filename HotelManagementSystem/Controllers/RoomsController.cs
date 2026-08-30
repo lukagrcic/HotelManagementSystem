@@ -2,6 +2,7 @@
 using HotelManagementSystem.Application.Features.Rooms.Queries;
 using HotelManagementSystem.Application.Features.RoomTypes.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace HotelManagementSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RoomsController : ControllerBase
     {
         private readonly IMediator _mediator;

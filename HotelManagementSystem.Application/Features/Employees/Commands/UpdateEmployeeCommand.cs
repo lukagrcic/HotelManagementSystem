@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using HotelManagementSystem.Domain.Repositories;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,6 +17,7 @@ namespace HotelManagementSystem.Application.Features.Employees.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<UpdateEmployeeCommand> _validator;
+        private readonly PasswordHasher<Domain.Entities.Employee> _passwordHasher = new();
 
         public UpdateEmployeeCommandHandler(IUnitOfWork unitOfWork, IValidator<UpdateEmployeeCommand> validator)
         {
@@ -39,7 +41,7 @@ namespace HotelManagementSystem.Application.Features.Employees.Commands
             employee.Username = request.Username;
             if (!string.IsNullOrWhiteSpace(request.Password))
             {
-                employee.PasswordHash = request.Password;
+                employee.PasswordHash = _passwordHasher.HashPassword(employee, request.Password);
             }
 
             _unitOfWork.Employees.Update(employee);
